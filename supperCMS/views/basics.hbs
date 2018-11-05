@@ -1,0 +1,163 @@
+<style>
+.layui-upload{width: 92px; margin: 0 auto; margin-bottom: 20px;}
+.layui-upload-img{width: 92px; height: 92px; margin: 0 10px 10px 0; background-color:#999999; border-radius: 50%;}
+</style>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+	<legend>基本信息</legend>
+</fieldset>
+
+<div class="layui-form" lay-filter="example">
+	<div class="layui-upload">
+		<div class="layui-upload-list">
+			<img class="layui-upload-img" src="{{usermsgs.portrait}}" id="demo1"  onerror="javascript:this.src='/images/default-avatar.png' ">
+			<p id="demoText"></p>
+		</div>
+		<button type="button" class="layui-btn" id="test1">上传图片</button>
+		<input type="hidden" name="portrait" autocomplete="off" class="layui-input" value="{{usermsgs.portrait}}">
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">账户</label>
+			<div class="layui-input-inline">
+				<input type="text" name="username" autocomplete="off" class="layui-input" value="{{usermsgs.username}}">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">名称</label>
+			<div class="layui-input-inline">
+				<input type="text" name="name" autocomplete="off" class="layui-input" value="{{usermsgs.cnname}}">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">性别</label>
+		<div class="layui-input-block">
+			<input type="radio" name="sex" value="0" title="男">
+			<input type="radio" name="sex" value="1" title="女">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">出生日期</label>
+			<div class="layui-input-inline">
+				<input type="text" name="birth" value="{{usermsgs.birth}}" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">年龄</label>
+			<div class="layui-input-inline">
+				<input type="text" name="age" value="{{usermsgs.age}}" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item layui-form-text">
+		<label class="layui-form-label">个人说明</label>
+		<div class="layui-input-block">
+			<textarea placeholder="请输入内容" name="remark"  class="layui-textarea">{{usermsgs.remark}}</textarea>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" lay-submit="demo1" lay-filter="demo1">保存</button>
+		</div>
+	</div>
+</div>
+<script>
+	layui.use(['form', 'layedit', 'laydate'], function() {
+		var form = layui.form,
+			layer = layui.layer,
+			layedit = layui.layedit,
+			laydate = layui.laydate;
+
+		//日期
+		laydate.render({
+			elem: 'input[name="birth"]'
+		});
+		laydate.render({
+			elem: '#date1'
+		});
+
+		//创建一个编辑器
+		var editIndex = layedit.build('LAY_demo_editor');
+
+		//自定义验证规则
+		form.verify({
+			title: function(value) {
+				if(value.length < 5) {
+					return '标题至少得5个字符啊';
+				}
+			},
+			pass: [/(.+){6,12}$/, '密码必须6到12位'],
+			content: function(value) {
+				layedit.sync(editIndex);
+			}
+		});
+
+		//监听提交
+		form.on('submit(demo1)', function(data) {
+			data.field.id = '{{usermsgs.id}}';
+			$.ajax({
+				type: "post",
+				url: "/users/usermsgedit",
+				async: true,
+				data: data.field,
+				success: function(data) {
+					if(data.state == 200) {
+						layer.msg(data.marked, {
+							icon: 1,
+							time: 1000
+						}, function() {
+							location.href = '/basics'
+						});
+					} else if(data.state == 500) {
+						layer.msg(data.marked, {
+							icon: 2,
+							time: 1000
+						}, function() {
+							location.href = '/basics'
+						});
+					}
+				},
+				error: function(data) {
+					console.log(data);
+				}
+			});
+		});
+
+		//表单初始赋值
+		form.val('example', {
+			"sex": '{{usermsgs.sex}}'
+		});
+	});
+	layui.use('upload', function() {
+		var $ = layui.jquery,
+			upload = layui.upload;
+		//普通图片上传
+		var uploadInst = upload.render({
+			elem: '#test1',
+			url: '/users/file_upload',
+			before: function(obj) {
+				//预读本地文件示例，不支持ie8
+				obj.preview(function(index, file, result) {
+					$('#demo1').attr('src', result); //图片链接（base64）
+				});
+			},
+			done: function(res) {
+				//如果上传失败
+				if(res.data){
+					layer.msg('上传成功');
+					$('input[name="portrait"]').val('/uploadfile/images/'+res.data);
+				}
+				//上传成功
+			},
+			error: function(data) {
+				//演示失败状态，并实现重传
+				var demoText = $('#demoText');
+				demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+				demoText.find('.demo-reload').on('click', function() {
+					uploadInst.upload();
+				});
+			}
+		});
+	});
+</script>

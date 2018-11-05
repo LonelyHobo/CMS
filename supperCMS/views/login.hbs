@@ -1,0 +1,26 @@
+<link rel="stylesheet" type="text/css" href="/stylesheets/login.css" />
+<div class="login">
+	<fieldset class="layui-elem-field layui-field-title">
+		<legend>{{title}}</legend>
+	</fieldset>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">账户</label>
+			<div class="layui-input-inline">
+				<input type="name" name="name" lay-verify="name" placeholder="请输入账户" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">密码</label>
+			<div class="layui-input-inline">
+				<input type="password" name="password" lay-verify="pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+	</div>
+	<div class="submitBtn">
+		<button class="layui-btn layui-btn-normal" id="submit">登录</button>
+	</div>
+</div>
+<script src="/javascripts/login.js" type="text/javascript" charset="utf-8"></script>
