@@ -1,0 +1,24 @@
+.box {
+	width: 200px;
+	/*border: 1px solid red;*/
+}
+
+#navList ul{
+	margin-left: 20px;
+}
+#navList{height:337px; overflow-y: auto;}
+.menuUl li {
+	margin: 10px 0;
+}
+
+.menuUl li span:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.menuUl li i {
+	margin-right: 10px;
+	top: 0px;
+	cursor: pointer;
+	color: #161616;
+}

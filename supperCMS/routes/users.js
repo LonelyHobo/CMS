@@ -170,4 +170,53 @@ router.post('/file_upload', upload.single('file'), function(req, res) {
 		marked: '上传成功'
 	});
 })
+
+//菜单设置
+var sql_nav = 'SELECT * FROM nav';
+router.post('/navdata', function(req, res, next) {
+	//解析请求参数
+	$sql.query(sql_nav, function(err, result) {
+		if(err) {
+			console.log('[SELECT ERROR] - ', err.message);
+			res.send({
+				data: null,
+				state: 500,
+				marked: '服务器异常'
+			});
+			return;
+		}
+		res.send({
+			data: result,
+			state: 200,
+			marked: '查询成功'
+		});
+	});
+});
+//修改菜单
+var nav_edit = 'UPDATE nav SET nav_name = ?,nav_show = ?,nav_parent = ?,nav_class = ? WHERE id = ?';
+router.post('/navedit', function(req, res, next) {
+	//解析请求参数
+	var params = req.body;
+	var navedit_Params = [params['nav-name'], params['nav-show'],params['nav-parent'],params['nav-class'], params['id']];
+	
+	$sql.query(nav_edit, navedit_Params, function(err, result) {
+		if(err) {
+			console.log('[UPDATE ERROR] - ', err.message);
+			res.send({
+				data: result,
+				state: 500,
+				marked: '更新失败'
+			});
+			return;
+		}
+		console.log('----------UPDATE-------------');
+		console.log('UPDATE affectedRows', result.affectedRows);
+		console.log('******************************');
+		res.send({
+			data: result,
+			state: 200,
+			marked: '更新成功'
+		});
+	});
+});
 module.exports = router;
