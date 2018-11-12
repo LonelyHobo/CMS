@@ -193,11 +193,11 @@ router.post('/navdata', function(req, res, next) {
 	});
 });
 //修改菜单
-var nav_edit = 'UPDATE nav SET nav_name = ?,nav_show = ?,nav_parent = ?,nav_class = ? WHERE id = ?';
+var nav_edit = 'UPDATE nav SET nav_name = ?,nav_show = ?,nav_parent = ?,nav_class = ?,nav_rank = ? WHERE id = ?';
 router.post('/navedit', function(req, res, next) {
 	//解析请求参数
 	var params = req.body;
-	var navedit_Params = [params['nav-name'], params['nav-show'],params['nav-parent'],params['nav-class'], params['id']];
+	var navedit_Params = [params['nav-name'], params['nav-show'],params['nav-parent'],params['nav-class'],params['nav-rank'], params['id']];
 	
 	$sql.query(nav_edit, navedit_Params, function(err, result) {
 		if(err) {
