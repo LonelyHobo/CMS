@@ -1,0 +1,1 @@
+//var boot = require('bootstrap');

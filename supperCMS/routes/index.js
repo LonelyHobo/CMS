@@ -22,14 +22,17 @@ var sqlData = function(sqls, fn) {
 //参数
 var publics = {
 	render:[
-		{path:'/',param:{title:'CMS'}},
-		{path:'/index',param:{title:'CMS'}},
-		{path:'/basics',param:{title:'基本信息'}},
-		{path:'/navMonitor',param:{title:'菜单设置',href: 'navMonitor'}}
+		{path:'/cmsadmin/',param:{title:'CMS'}},
+		{path:'/cmsadmin/index',param:{title:'CMS'}},
+		{path:'/cmsadmin/basics',param:{title:'基本信息'}},
+		{path:'/cmsadmin/navMonitor',param:{title:'菜单设置',href: 'navMonitor'}}
+	],
+    webrender:[
+        {path:'/',param:{title:'HOME',thispage:'home'}},
 	]
 }
 //登录
-router.get('/login', function(req, res, next) {
+router.get('/cmsadmin/login', function(req, res, next) {
 	res.clearCookie('username');
 	res.render('cmsadmin/login', {
 		title: 'CMS登录',
@@ -41,19 +44,52 @@ router.get('/login', function(req, res, next) {
 publics.render.forEach(function(value,index,array){
     renders(value.path,value.param);
 })
+publics.webrender.forEach(function(value,index,array){
+    webrenders(value.path,value.param);
+})
 //执行方法
 function renders(path,objs) {
 	router.get(path, function(req, res, next) {
 		if(!req.cookies.username) {
-			res.redirect('/login');
+			res.redirect('/cmsadmin/login');
 		} else {
 			sqlData(sql_cnname+'"'+req.cookies.username+'"', function(result) {
 				var obj_ = {layout: 'cmsadmin/layout',usermsgs: result[0]};
-				mergeJSON(objs,obj_)
-				res.render('cmsadmin'+path,obj_);
+				mergeJSON(objs,obj_)	
+                path=path=='/cmsadmin/'?'/cmsadmin/index':path;
+				res.render(path.replace('/',''),obj_);
 			})
 		}
 	});
+}
+
+//web
+var sql_nav = 'SELECT * FROM nav';
+function webrenders(path,objs){
+    router.get(path, function(req, res, next) {
+        sqlData(sql_nav, function(result) {
+        	var nav_arr = [],nav_name_list={};
+        	nav_arr.push({id: 99999, nav_name: "首页", nav_rank: 1, nav_parent: 0, nav_class: "home",pagename:'home',nav_show: 1,nav_on:''})
+        	nav_arr[0].nav_on=nav_arr[0].pagename==objs.thispage?'layui-this':''
+    		result.forEach(function(value,index,array){
+    			value.nav_on=value.pagename==objs.thispage?'layui-this':''
+    			if(value.nav_show==1){
+    				if(value.nav_rank == 1){
+	    				value.nav_list=[];
+	    				nav_arr.push(value);
+	    				nav_name_list[value.id]=nav_arr.length-1;
+	    			}else{
+	    				nav_arr[nav_name_list[value.nav_parent]].nav_list.push(value);
+	    			}
+    			}
+    		})
+
+			var obj_ = {layout: 'web/layout',nav: nav_arr};
+	        mergeJSON(objs,obj_);
+	        path=path=='/'?'/index':path;
+	        res.render('web'+path,obj_);
+		})
+    });
 }
 // 遇到相同元素级属性，以后者（main）为准
 // 不返还新Object，而是main改变

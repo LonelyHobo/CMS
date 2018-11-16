@@ -1,0 +1,23 @@
+<ul class="layui-nav" lay-filter="">
+	{{#each nav}}
+		 <li class="layui-nav-item {{this.nav_on}}" >
+				<a href="">{{this.nav_name}}</a>
+				{{#if this.nav_list}}
+				<dl class="layui-nav-child"> <!-- 二级菜单 -->
+					{{#each this.nav_list}}
+			      		<dd class="{{this.nav_on}}"><a href="">{{this.nav_name}}</a></dd>
+			      	{{/each}}	
+			    </dl>
+			    {{/if}}
+		</li>
+	{{/each}}	
+</ul>
+ 
+<script>
+//注意：导航 依赖 element 模块，否则无法进行功能性操作
+layui.use('element', function(){
+  var element = layui.element;
+  
+  //…
+});
+</script>

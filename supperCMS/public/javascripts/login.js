@@ -14,7 +14,7 @@ $(function() {
 						icon: 1,
 						time: 1000
 					}, function() {
-						location.href = '/index'
+						location.href = '/cmsadmin/index'
 					});
 				} else if(data.state == 400) {
 					layer.msg(data.marked, {

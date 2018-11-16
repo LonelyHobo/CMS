@@ -11,26 +11,6 @@
 			<li class="layui-nav-item">
 				<a href="">控制台</a>
 			</li>
-			<li class="layui-nav-item">
-				<a href="">商品管理</a>
-			</li>
-			<li class="layui-nav-item">
-				<a href="">用户</a>
-			</li>
-			<li class="layui-nav-item">
-				<a href="javascript:;">其它系统</a>
-				<dl class="layui-nav-child">
-					<dd>
-						<a href="">邮件管理</a>
-					</dd>
-					<dd>
-						<a href="">消息管理</a>
-					</dd>
-					<dd>
-						<a href="">授权管理</a>
-					</dd>
-				</dl>
-			</li>
 		</ul>
 		<ul class="layui-nav layui-layout-right">
 			<li class="layui-nav-item">
@@ -39,7 +19,7 @@
 				</a>
 				<dl class="layui-nav-child">
 					<dd>
-						<a href="">基本资料</a>
+						<a href="/cmsadmin/basics">基本资料</a>
 					</dd>
 					<dd>
 						<a href="">安全设置</a>
@@ -47,7 +27,7 @@
 				</dl>
 			</li>
 			<li class="layui-nav-item">
-				<a href="/login">退出</a>
+				<a href="/cmsadmin/login">退出</a>
 			</li>
 		</ul>
 	</div>
@@ -57,48 +37,27 @@
 			<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
 			<ul class="layui-nav layui-nav-tree" lay-filter="test" id="layui-nav">
 				<li class="layui-nav-item layui-nav-itemed">
-					<a class="" href="javascript:;">所有商品</a>
+					<a class="" href="javascript:;">个人设置</a>
 					<dl class="layui-nav-child">
 						<dd>
-							<a href="javascript:;">列表一</a>
-						</dd>
-						<dd>
-							<a href="javascript:;">列表二</a>
-						</dd>
-						<dd>
-							<a href="javascript:;">列表三</a>
-						</dd>
-						<dd>
-							<a href="">超链接</a>
+							<a href="javascript:" data-href="/cmsadmin/basics">基本资料</a>
 						</dd>
 					</dl>
 				</li>
-				<li class="layui-nav-item">
-					<a href="javascript:;">解决方案</a>
+				<li class="layui-nav-item layui-nav-itemed">
+					<a class="" href="javascript:;">网站管理</a>
 					<dl class="layui-nav-child">
 						<dd>
-							<a href="javascript:;">列表一</a>
-						</dd>
-						<dd>
-							<a href="javascript:;">列表二</a>
-						</dd>
-						<dd>
-							<a href="">超链接</a>
+							<a href="javascript:" data-href="/cmsadmin/navMonitor">导航管理</a>
 						</dd>
 					</dl>
-				</li>
-				<li class="layui-nav-item">
-					<a href="">云市场</a>
-				</li>
-				<li class="layui-nav-item">
-					<a href="javascript:" data-href="/navMonitor">导航管理</a>
 				</li>
 			</ul>
 		</div>
 	</div>
 
 	<div class="layui-body" style="overflow: hidden;">
-		<iframe src="/basics" width="100%" height="100%" id="layui-iframe" style="overflow: hidden;"></iframe>
+		<iframe src="/cmsadmin/basics" width="100%" height="100%" id="layui-iframe" style="overflow: hidden;"></iframe>
 	</div>
 
 	<div class="layui-footer">

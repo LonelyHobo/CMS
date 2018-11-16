@@ -5,10 +5,16 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
-
+var exphbs  = require('express-handlebars');
+var helper = require('./routes/helper');
 var app = express();
-
+app.engine('.hbs', exphbs({
+    layoutsDir: 'views',
+    defaultLayout: 'layout',
+    partialsDir: 'views/web',
+    extname: '.hbs',
+    helpers:helper.helper
+}));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('cmsadmin', path.join(__dirname, 'views/cmsadmin'));
