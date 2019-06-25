@@ -25,7 +25,9 @@ var publics = {
 		{path:'/cmsadmin/',param:{title:'CMS'}},
 		{path:'/cmsadmin/index',param:{title:'CMS'}},
 		{path:'/cmsadmin/basics',param:{title:'基本信息'}},
-		{path:'/cmsadmin/navMonitor',param:{title:'菜单设置',href: 'navMonitor'}}
+		{path:'/cmsadmin/navMonitor',param:{title:'菜单设置',href: 'navMonitor'}},
+		{path:'/cmsadmin/news',param:{title:'新闻管理'}},
+		{path:'/cmsadmin/newsDetails',param:{title:'文章管理'}},
 	],
     webrender:[
         {path:'/',param:{title:'HOME',thispage:'home'}},

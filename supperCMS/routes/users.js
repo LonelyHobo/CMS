@@ -219,4 +219,37 @@ router.post('/navedit', function(req, res, next) {
 		});
 	});
 });
+//SQL语句
+var sql_news = 'SELECT * FROM news';
+router.post('/newsdata', function(req, res, next) {
+	//解析请求参数
+	$sql.query(sql_news, function(err, result) {
+		if(err) {
+			console.log('[SELECT ERROR] - ', err.message);
+			res.send({
+				data: null,
+				status: 500,
+				code:500,
+				marked: '服务器异常'
+			});
+			return;
+		}
+		if(result.length > 0) {
+			res.send({
+				data: result,
+				status: 200,
+				code:200,
+				marked: '查询成功'
+			});
+		} else {
+			res.send({
+				data: null,
+				status: 400,
+				code:400,
+				marked: '无数据'
+			});
+		}
+	});
+});
+
 module.exports = router;
